@@ -133,6 +133,15 @@ public:
     * @return True if achieved, false otherwise
     */
   bool isGoalReached();
+
+  /**
+    * @brief  Check if the planner is in oscillation mode
+    * 
+    * The actual check is performed in the Feature_detection 
+    * Only the status flag is checked here.
+    * @return True if oscillating, false otherwise
+    */  
+  bool isOscillating();
   
   
     

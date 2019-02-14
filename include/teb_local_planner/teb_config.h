@@ -334,7 +334,7 @@ public:
     recovery.oscillation_v_eps = 0.1;
     recovery.oscillation_omega_eps = 0.1;
     recovery.oscillation_recovery_min_duration = 10;
-    recovery.oscillation_filter_duration = 10;
+    recovery.oscillation_filter_duration = 0.5;
 
 
   }

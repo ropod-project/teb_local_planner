@@ -392,6 +392,21 @@ bool TebLocalPlannerROS::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
     }
   }
   
+  
+  
+  // When oscillating return false so the higher level planner recompute velocities. 
+  // This should be done better by redefining the nav core interface orjust not using it.
+  if(failure_detector_.isOscillating())
+  {
+      planner_->clearPlanner();
+      ROS_WARN("TebLocalPlannerROS: Oscillating. For now inmediately Resetting planner...");
+      ++no_infeasible_plans_; // increase number of infeasible solutions in a row
+      time_last_infeasible_plan_ = ros::Time::now();
+      failure_detector_.clear();
+      last_cmd_ = cmd_vel;      
+      return false;
+  }
+  
   // a feasible solution should be found, reset counter
   no_infeasible_plans_ = 0;
   
@@ -419,6 +434,11 @@ bool TebLocalPlannerROS::isGoalReached()
 }
 
 
+
+bool TebLocalPlannerROS::isOscillating()
+{
+  return failure_detector_.isOscillating();
+}
 
 void TebLocalPlannerROS::updateObstacleContainerWithCostmap()
 {  
